@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+	<persistence-unit name="UserPUnit"
+		transaction-type="JTA">
+		<!-- Defines the JPA provider : - EclipseLink for runtime - Hibernate for 
+			schema generation with the maven plugin (no EclipseLink implementation available) -->
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<jta-data-source>jdbc/UserDS</jta-data-source>
+		<properties>
+			<!-- EclipseLink properties for regular use -->
+			<!-- EclipseLink should create the database schema automatically -->
+			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode"
+				value="both" />
+			<!-- Properties for database schema generation : file location, names 
+				.... Default location is \glassfish\domains\domain1\generated\ejb\mgs <property 
+				name="eclipselink.application-location" value="./..."/> <property name="eclipselink.create-ddl-jdbc-file-name" 
+				value="create.sql"/> <property name="eclipselink.drop-ddl-jdbc-file-name" 
+				value="drop.sql"/> -->
+			<property name="eclipselink.target-database" value="PostgreSQL" />
+			<property name="eclipselink.logging.level" value="FINE" />
+			<!-- Disable EclipseLink cache: Can be deleted in production phase. Required 
+				in dev. phase because some database update occur out of EclipseLink (example: 
+				DBUnit test) -->
+			<property name="eclipselink.cache.shared.default" value="false" />
+			<!-- Hibernate properties only there to generate database schema with 
+				the hibernate maven plugin <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" 
+				/> -->
+		</properties>
+	</persistence-unit>
+</persistence>
